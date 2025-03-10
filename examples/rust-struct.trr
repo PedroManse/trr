@@ -1,0 +1,39 @@
+let [proj_name, args] = b.args;
+#sh"cargo new --bin {proj_name}";
+#cd"{proj_name}";
+b.write-file ".gitignore" %"
+target
+shell.nix
+.envrc
+";
+
+
+let { set<dict<string, list<string>>> } = b.fold args *:ac<dict> :arg<string> {
+	b.if (b.strip_prefix arg "-") :feat{
+		ac.set[last] = b.push_str ac.set[last] %" {feat}";
+		</ features = b.push_str features %" {feat}"; />
+	} $ b.elseif (b.empty_string ac.last) :_{
+		ac.set[last] = "";
+		ac.last = arg;
+	} :_{
+		b.if (features) :feats{
+			b.sh %"cargo add {crate_name} --features {features}";
+			#sh"cargo add {crate_name} --features {features}";
+		} :{
+			#sh"cargo add {crate_name}";
+		};
+		features = "";
+		crate_name = arg;
+	};
+	return ac;
+} {set={};last="";};
+
+b.for_attrs set :crate_name:features{
+	b.if (features) :feats{
+		b.sh %"cargo add {crate_name} --features {features}";
+		#sh"cargo add {crate_name} --features {features}";
+	} :{
+		#sh"cargo add {crate_name}";
+	};
+}
+

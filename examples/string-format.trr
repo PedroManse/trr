@@ -1,0 +1,8 @@
+let var_hello = %"hello";
+let var_world = %"world";
+let hello_world = %"{var_hello}, {var_world}";
+let hello_person = %<<*>>"<<var_hello>>, person";
+let hello_quote = \end-of-text hello world end-of-text;
+let hello_quote_fmt_star = \EOF* hello, {var_world} EOF;
+let hello_quote_fmt_attr_star = \EOF*{{*}}* {hello}, {{var_world}} EOF;
+

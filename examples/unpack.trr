@@ -1,0 +1,7 @@
+let [a, b, c] = [1, 2, 3];
+let {set, attr, dict} = {
+	set = 1;
+	attr = 2;
+	dict = 3;
+};
+

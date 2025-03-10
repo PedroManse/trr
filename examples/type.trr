@@ -1,0 +1,3 @@
+let hello<string> = "hello";
+let if <fn<T>> = :exp<E> :truthy<fn<E, T>> :falsy<fn<E, T>> { return b.if exp truthy falsy }
+

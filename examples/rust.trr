@@ -1,0 +1,31 @@
+let [_, proj_name, args] = b.args;
+
+#sh"cargo new --bin {proj_name}";
+#cd"{proj_name}";
+
+b.write-file ".gitignore" %"
+target
+shell.nix
+.envrc
+";
+
+let crate_name <string> = "";
+let features <string> = "";
+b.for_each args :{
+	b.if (b.strip_prefix this "-") :feat{
+		features = b.push_str features %" {feat}";
+	} $ b.elseif (b.empty_string crate_name) :_{
+		crate_name = this;
+	} :_{
+		b.if (features) :feats{
+			b.sh %"cargo add {crate_name} --features {features}";
+			#sh"cargo add {crate_name} --features {features}";
+		} :{
+			#sh"cargo add {crate_name}";
+		};
+		features = "";
+		crate_name = this;
+	};
+};
+
+

@@ -1,0 +1,19 @@
+b.print "Hello";
+
+#print %"hello";
+
+#print"hello";
+
+#sh \EOF
+echo "hello"
+EOF;
+
+#sh \EOF*{{*}}*
+x="world"
+echo "{{hello}}, ${x}"
+EOF
+
+#html \</html>*<html>
+	<body>
+	</body>
+</html>;
