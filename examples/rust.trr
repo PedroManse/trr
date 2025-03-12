@@ -15,6 +15,7 @@ b.for_each args :{
 	b.if (b.strip_prefix this "-") :feat{
 		features = b.push_str features %" {feat}";
 	} $ b.elseif (b.empty_string crate_name) :_{
+		</TODO: fet crate_name as $1 on fold/>
 		crate_name = this;
 	} :_{
 		b.if (features) :feats{

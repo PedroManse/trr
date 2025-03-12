@@ -1,0 +1,44 @@
+code = { expr+ }
+expr = { ( return| let | fn_call | fn | "(" ~ inline_expr ~ ")" | value | list ) ~ ";" }
+inline_expr =    { let | fn_call | fn | "(" ~ inline_expr ~ ")" | value | list }
+
+// fn call
+fn_call = { ident_call | hash_call }
+ident_call = { ident ~ "(" ~ many_exprs ~ ")" }
+hash_call = { "#" ~ ident ~ string }
+
+// return
+return = { "return " ~ inline_expr }
+
+// fn
+fn = { ":" ~ many_args? ~ "{" ~ (expr*) ~ "}" }
+many_args = { ident_def ~ (":" ~ ident_def)* }
+
+// args
+many_exprs = { ( inline_expr ~ ("," ~ inline_expr)* )? }
+
+// let expr
+let = { "let " ~ (unpack_var | ident) ~ "="  ~ inline_expr }
+ident_def = { ident ~ type? }
+many_items = { ( ident_def ~ ("," ~ ident_def)* )? }
+unpack_var = { "[" ~ many_items ~ "]" | "{" ~ many_items ~ "}" }
+
+// type
+type = { "<" ~ type_instance ~ ">" }
+many_types = { type_instance | type_instance ~ "," ~ many_types }
+type_instance  = { "string" | "number" | "list" ~ type | "set" | "fn" ~ type+ }
+string = { "\"" ~ ( !"\"" ~ ANY)* ~ "\"" }
+set_access = { "." ~ ident }
+ident = { !('0'..'9') ~ ('a'..'z' | 'A'..'Z' | '0'..'9' | "-" | "_")+ ~ (set_access)? }
+
+// rhs expr
+list = { "[" ~ (value ~ ("," ~ value)*)? ~ "]" }
+
+// lhs expr
+alpha = { 'a'..'z' | 'A'..'Z' }
+digit = { '0'..'9' }
+
+number = { !"0" ~ digit+ }
+value = { digit | string | ident }
+
+WHITESPACE = _{ " " | "\n" | "\t" }

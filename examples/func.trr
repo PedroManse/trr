@@ -1,0 +1,6 @@
+let w = :{ return this; };
+let x = :arg{ return arg; };
+let y = :arg1:arg2{ return arg1; };
+let z = :{
+	return this;
+};
